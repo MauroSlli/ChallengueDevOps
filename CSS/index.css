@@ -192,3 +192,99 @@ position: absolute;
 right: -35px;
 top: -35px;
 }
+
+
+
+/*----------------------------*/
+/*Footer*/
+/*----------------------------*/
+
+footer .Redes-Sociales {
+
+display: flex;
+align-content: center;
+justify-content: center;
+padding: 20px;
+flex-wrap: wrap;
+
+}
+
+footer .Redes-Sociales a {
+
+display: block;
+width: 60px;
+height: 60px;
+background: #000;
+color: #fff;
+margin: 20px;
+text-align: center;
+border-radius: 100px;
+transition: .3s ease all;
+
+}
+
+footer .Redes-Sociales .linkedin{background: #2566B9;}
+footer .Redes-Sociales .github{background: #33363B;}
+
+footer .Redes-Sociales a i{
+     font-size: 20px;
+     line-height: 60px;
+}
+
+footer .contenedor-icono:hover a{
+     animation: icono .5s ease;
+
+} 
+
+
+@keyframes icono {
+
+from{
+
+    transform: rotate3d(0, 0, 0, 0);
+
+}
+
+to{
+
+  transform: rotate3d(0, 1, 0, 360deg);
+}
+}
+
+
+
+footer .Creado-por{
+
+margin-bottom: 40px;
+text-align: center;
+font-size: 14px;
+color: #c13584;
+
+}
+
+footer .Creado-por b{
+
+color: #000;
+
+}
+
+/*-----------------------*/
+/*Mediaqueries*/
+/*----------------------*/
+
+
+@media screen and (max-width: 500px){
+
+
+.grid .item{
+
+width: calc(50% - 20px);
+
+}
+
+header .barra-busqueda{
+
+width: 100%;
+
+}
+}
