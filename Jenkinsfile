@@ -1,12 +1,18 @@
 pipeline {
     agent any
+    
+    environment {
+        // Define variables de entorno, como las credenciales si es necesario
+        GIT_CREDENTIALS_ID = 'credentialGitHub'
+        REPO_URL = 'https://github.com/MauroSlli/ChallengueDevOps.git'
+    }
 
     stages {
     
         stage('Checkout Branch') {
             steps {
                 // Clona la rama específica
-                git branch: 'modifications'
+                git branch: 'modifications', url: "${env.REPO_URL}", credentialsId: "${env.GIT_CREDENTIALS_ID}"
             }
         }
         
