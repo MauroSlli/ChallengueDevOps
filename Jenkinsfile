@@ -26,18 +26,12 @@ pipeline {
         stage('Merge to Main') {
             steps {
                 script {
-                    // Configura Git para la fusión
-                    sh 'git config user.name "MauroSlli"'
-                    sh 'git config user.email "maurosacarelli@gmail.com"'
-                    
-                    // Cambia a la rama principal
-                    sh 'git checkout master'
-                    
-                    // Fusiona la rama actual a la rama principal
-                    sh 'git merge modifications'
-                    
-                    // Realiza un push de los cambios fusionados
-                    sh 'git push origin master'
+                    withCredentials([usernamePassword(credentialsId: "${env.GIT_CREDENTIALS_ID}", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+                        sh 'git config credential.helper store'
+                        sh "echo 'https://${env.GIT_USERNAME}:${env.GIT_PASSWORD}@github.com' > ~/.git-credentials"
+                        sh 'git push origin master'
+                        sh 'rm ~/.git-credentials'
+                    }
                 }
             }
         }
