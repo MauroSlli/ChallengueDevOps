@@ -12,6 +12,7 @@ pipeline {
         stage('Checkout Branch') {
             steps {
                 // Clona la rama específica
+                git 'REPO_URL'
                 git branch: 'modifications', url: "${env.REPO_URL}", credentialsId: "${env.GIT_CREDENTIALS_ID}"
             }
         }
@@ -29,6 +30,8 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: "${env.GIT_CREDENTIALS_ID}", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                         sh 'git config credential.helper store'
                         sh "echo 'https://${env.GIT_USERNAME}:${env.GIT_PASSWORD}@github.com' > ~/.git-credentials"
+                        sh 'git checkout master'
+                        sh 'git merge modifications'
                         sh 'git push origin master'
                         sh 'rm ~/.git-credentials'
                     }
