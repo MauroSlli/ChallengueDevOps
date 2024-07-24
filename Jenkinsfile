@@ -14,7 +14,7 @@ pipeline {
                 // Clona la rama específica
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE'){
                 git 'REPO_URL'
-                }
+                 }
                 git branch: 'modifications', url: "${env.REPO_URL}", credentialsId: "${env.GIT_CREDENTIALS_ID}"
             }
         }
