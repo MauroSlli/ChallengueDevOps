@@ -16,4 +16,7 @@
     "url": "https://github.com/MauroSlli/ChallengueDevOps/issues"
   },
   "homepage": "https://github.com/MauroSlli/ChallengueDevOps#readme"
+  "publishConfig": {
+  "@MauroSlli:registry": "https://npm.pkg.github.com"
+}
 }
