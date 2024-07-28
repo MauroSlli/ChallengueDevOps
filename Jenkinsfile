@@ -14,8 +14,8 @@ pipeline {
               script{
                 try{   
                   git branch: 'master', url: '${env.REPO_URL}', credentialsId: '${env.GIT_CREDENTIALS_ID}'
-                } catch (Exception e){ echo "error ignorado"}
-}
+                } catch (Exception e){ echo "error ignorado" }
+              }
              
             }
         }
@@ -27,7 +27,7 @@ pipeline {
             }
         }
         stage('logs del dummy') {
-          step{
+          steps{
             sh "cat dummy.txt"
           }
         }
