@@ -11,34 +11,30 @@ pipeline {
     
         stage('Checkout Branch') {
             steps {
-                // Clona la rama específica
-                catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE'){
-                git 'REPO_URL'
-                 }
-                git branch: 'modifications', url: "${env.REPO_URL}", credentialsId: "${env.GIT_CREDENTIALS_ID}"
+                
+                git url: '${env.REPO_URL}', credentialsId: '${env.GIT_CREDENTIALS_ID}'
             }
         }
         
         stage('Build') {
             steps {
-                // Comandos para construir tu proyecto
-                echo 'Construyendo el proyecto...'
+                
+                echo 'Ejecutando codigo del build'
             }
         }
         
-        stage('Merge to Main') {
+        stage('Deploy to GitHub pages') {
             steps {
-                script {
-                    withCredentials([usernamePassword(credentialsId: "${env.GIT_CREDENTIALS_ID}", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-                        sh 'git config credential.helper store'
-                        sh "echo 'https://${env.GIT_USERNAME}:${env.GIT_PASSWORD}@github.com' > ~/.git-credentials"
-                        sh 'git checkout master'
-                        sh 'git merge modifications'
-                        sh 'git push origin master'
-                        sh 'rm ~/.git-credentials'
-                    }
+                withCredentials([string(credentialsId: '${env.GIT_CREDENTIALS_ID}', passwordVariable: 'GIT_TOKEN', usernameVariable: 'GIT_USER')]) {
+                    sh """
+                    git config --global user.email "maurosacarelli@gmail.com"
+                    git config --global user.name "${GIT_USER}"
+                    git checkout -b gh-pages
+                    git add .
+                    git commit -m "Deploy to GitHub Pages"
+                    git push --force https://${GIT_TOKEN}@github.com/${GIT_USER}/ChallengueDevOps.git gh-pages
+                    """
                 }
-            }
         }
     }    
 }
