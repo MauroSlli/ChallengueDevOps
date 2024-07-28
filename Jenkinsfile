@@ -11,8 +11,9 @@ pipeline {
     
         stage('Checkout Branch') {
             steps {
-                   
+                withCredentials([string(credentialsId: 'env.GIT_CREDENTIALS_ID',)]){   
                 git branch: 'master', url: '${env.REPO_URL}', credentialsId: '${env.GIT_CREDENTIALS_ID}'
+                }
              
             }
         }
