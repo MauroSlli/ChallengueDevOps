@@ -34,15 +34,11 @@ pipeline {
         
         stage('Deploy to GitHub pages') {
             steps {
-                withCredentials([string(credentialsId: '${env.GIT_CREDENTIALS_ID}', passwordVariable: 'GIT_TOKEN', usernameVariable: 'GIT_USER')]) {
-                    sh """
-                    git config --global user.email "maurosacarelli@gmail.com"
-                    git config --global user.name "${GIT_USER}"
-                    git checkout -b gh-pages
-                    git add .
-                    git commit -m "Deploy to GitHub Pages"
-                    git push --force https://${GIT_TOKEN}@github.com/${GIT_USER}/ChallengueDevOps.git gh-pages
-                    """
+                withCredentials([string(credentialsId: '${env.GIT_CREDENTIALS_ID}', variable: 'GITHUB_TOKEN')]) {
+                    sh '''
+                    echo "//npm.pkg.github.com/:_authToken=$GITHUB_TOKEN" > ~/.npmrc
+                    npm publish --registry=https://npm.pkg.github.com
+                    '''
                 }
         }
     }    
