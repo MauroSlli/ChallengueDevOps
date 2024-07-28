@@ -26,6 +26,11 @@ pipeline {
                 echo 'Ejecutando codigo del build'
             }
         }
+        stage('logs del dummy') {
+          step{
+            sh "cat dummy.txt"
+          }
+        }
         
         stage('Deploy to GitHub pages') {
             steps {
