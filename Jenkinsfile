@@ -11,11 +11,9 @@ pipeline {
     
         stage('Checkout Branch') {
             steps {
-                script{
-                   catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-                git url: '${env.REPO_URL}', credentialsId: '${env.GIT_CREDENTIALS_ID}'
-                   }
-                }
+                   
+                git branch: 'master', url: '${env.REPO_URL}', credentialsId: '${env.GIT_CREDENTIALS_ID}'
+             
             }
         }
         
