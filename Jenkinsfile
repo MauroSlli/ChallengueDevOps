@@ -4,6 +4,7 @@ pipeline {
     environment {
         GIT_CREDENTIALS_ID = 'credentialGitHub'
         REPO_URL = 'https://github.com/MauroSlli/ChallengueDevOps.git'
+        AZURE_CREDENTIALS= "azurecredentials"
     }
 
     stages {
@@ -35,11 +36,11 @@ pipeline {
                   
                    // Crdenciales de azuredevops
                     
-                   withCredentials([usernamePassword(credentialsId: 'azurecredentials', usernameVariable: 'USERNAME', passwordVariable: 'PAT')]) { 
+                   withCredentials([usernamePassword(credentialsId: '${env.AZURE_CREDENTIALS}', usernameVariable: 'USERNAME', passwordVariable: 'PAT')]) { 
 
                    // Publicando el paquete en Azure Artifacts
 
-                   az devops login --pat PAT
+                   az devops login --pat ${env.PAT}
  
                    sh 'az artifacts universal publish --organization https://dev.azure.com/Maurosacarelli/ --feed Maurosacarelli --name my-first-package --version 0.0.1 --description "Welcome to Universal Packages" --path .'
 
