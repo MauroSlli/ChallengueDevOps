@@ -38,17 +38,16 @@ pipeline {
                     
                    withCredentials([usernamePassword(credentialsId: "${env.AZURE_CREDENTIALS}", usernameVariable: 'USERNAME', passwordVariable: 'PAT')]) { 
 
-                   // Publicando el paquete en Azure Artifacts
+                   // Establecer la variable de entorno AZURE_DEVOPS_EXT_PAT con el valor del PAT
+                env.AZURE_DEVOPS_EXT_PAT = "${PAT}"
 
-                   sh '''
-                   
-                   #!/bin/bash
-  
-                   az devops login
+                // Iniciar sesión con el PAT almacenado en la variable de entorno
+                sh 'az devops login'
 
-                   az artifacts universal publish --organization https://dev.azure.com/Maurosacarelli/ --feed Maurosacarelli --name my-first-package --version 0.0.1 --description "Welcome to Universal Packages" --path .
-                   
-                   '''  
+                // Publicar el paquete en Azure Artifacts
+                sh '''
+                az artifacts universal publish --organization https://dev.azure.com/Maurosacarelli/ --feed Maurosacarelli --name my-first-package --version 0.0.1 --description "Welcome to Universal Packages" --path .
+                '''  
                    }
                 }
             }
