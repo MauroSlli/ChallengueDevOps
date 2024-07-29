@@ -38,6 +38,8 @@ pipeline {
                    withCredentials([usernamePassword(credentialsId: 'azurecredentials', usernameVariable: 'USERNAME', passwordVariable: 'PAT')]) { 
 
                    // Publicando el paquete en Azure Artifacts
+
+                   az devops login --pat PAT
  
                    sh 'az artifacts universal publish --organization https://dev.azure.com/Maurosacarelli/ --feed Maurosacarelli --name my-first-package --version 0.0.1 --description "Welcome to Universal Packages" --path .'
 
