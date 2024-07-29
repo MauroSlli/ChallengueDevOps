@@ -45,7 +45,9 @@ pipeline {
         }
         
         stage('contenido dummy.txt'){
-        sh 'cat dummy.txt'
+          steps{
+            sh 'cat dummy.txt'
+          }
         }
                 
             
