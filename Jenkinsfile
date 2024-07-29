@@ -16,9 +16,23 @@ pipeline {
             }
         }
         
-        stage('Build') {
+        stage('Package') {
             steps {
-                echo 'Construyendo el proyecto...'
+                script {
+                    // Empaquetando Archivo
+                    sh 'nuget pack challengue.nuspec'
+                }
+            }
+        }
+
+        stage('Publish to Azure Artifacts') {
+            steps {
+                script {
+                    // Publicando el paquete en Azure Artifacts
+                    sh '''
+                        az artifacts universal publish --organization https://dev.azure.com/Maurosacarelli/ --feed Maurosacarelli --name my-first-package --version 0.0.1 --description "Welcome to Universal Packages" --path .
+                    '''
+                }
             }
         }
         
