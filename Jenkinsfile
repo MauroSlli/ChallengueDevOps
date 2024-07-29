@@ -35,9 +35,9 @@ pipeline {
 
                     // Publicando el paquete en Azure Artifacts
 
-                    sh '''
+                    
                         az artifacts universal publish --organization https://dev.azure.com/Maurosacarelli/ --feed Maurosacarelli --name my-first-package --version 0.0.1 --description "Welcome to Universal Packages" --path .
-                    '''
+                    
 
                    }
                 }
@@ -47,12 +47,9 @@ pipeline {
         stage('contenido dummy.txt'){
         sh 'cat dummy.txt'
         }
-        
-        stage('Update artifact') {
-            steps {
                 
-            }
-        }
+            
+        
     }    
 }
 
