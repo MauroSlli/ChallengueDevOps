@@ -11,36 +11,35 @@ pipeline {
     
         stage('Checkout Branch') {
             steps {
-              script{
-                try{   
-                  git branch: 'master', url: '${env.REPO_URL}', credentialsId: '${env.GIT_CREDENTIALS_ID}'
-                } catch (Exception e){ echo "error ignorado" }
-              }
-             
+                // Clona la rama específica
+                catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE'){
+                git 'REPO_URL'
+                 }
+                git branch: 'modifications', url: "${env.REPO_URL}", credentialsId: "${env.GIT_CREDENTIALS_ID}"
             }
         }
         
         stage('Build') {
             steps {
-                
-                echo 'Ejecutando codigo del build'
+                // Comandos para construir tu proyecto
+                echo 'Construyendo el proyecto...'
             }
         }
-        stage('logs del dummy') {
-          steps{
-            sh "cat dummy.txt"
-          }
-        }
         
-        stage('Deploy to GitHub pages') {
+        stage('Merge to Main') {
             steps {
-                withCredentials([string(credentialsId: '${env.GIT_CREDENTIALS_ID}', variable: 'GITHUB_TOKEN')]) {
-                    sh '''
-                    echo "//npm.pkg.github.com/:_authToken=$GITHUB_TOKEN" > ~/.npmrc
-                    npm publish --registry=https://npm.pkg.github.com
-                    '''
+                script {
+                    withCredentials([usernamePassword(credentialsId: "${env.GIT_CREDENTIALS_ID}", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+                        sh 'git config credential.helper store'
+                        sh "echo 'https://${env.GIT_USERNAME}:${env.GIT_PASSWORD}@github.com' > ~/.git-credentials"
+                        sh 'git checkout master'
+                        sh 'git merge modifications'
+                        sh 'git push origin master'
+                        sh 'rm ~/.git-credentials'
+                    }
                 }
+            }
         }
     }    
 }
-}
+
